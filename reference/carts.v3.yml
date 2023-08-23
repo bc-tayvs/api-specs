@@ -18,6 +18,12 @@ servers:
         default: store_hash
         description: Permanent ID of the BigCommerce store.
     description: BigCommerce API Gateway
+  - url: 'https://api.integration.zone/stores/{store_hash}/v3'
+    variables:
+      store_hash:
+        default: store_hash
+        description: Permanent ID of the BigCommerce store.
+    description: BigCommerce API Gateway
 security:
   - X-Auth-Token: []
 tags:
@@ -789,7 +795,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetafieldResponse'
+                $ref: '#/components/schemas/MetaFieldCollectionResponse'
         '409':
           description: |
             The `Metafield` conflicts with another `Metafield`. This can be the result of duplicate unique key combinations of the appʼs client id, namespace, key, resource_type, and resource_id.
@@ -830,7 +836,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetaFieldCollectionResponse'
+                $ref: '#/components/schemas/MetafieldResponse'
               examples: {}
         '404':
           description: |
@@ -910,7 +916,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetaFieldCollectionResponse'
+                $ref: '#/components/schemas/MetafieldResponse'
               examples: {}
         '404':
           description: |
@@ -945,7 +951,7 @@ paths:
         in: path
         required: true
         description: The unique ID of the subject `Metafield`.
-  '/carts/metafiedls':
+  '/carts/metafields':
     get:
       summary: Get Carts Metafields
       tags:
@@ -959,7 +965,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetafieldResponse'
+                $ref: '#/components/schemas/MetaFieldCollectionResponse'
         '500':
           description: Internal Server Error
       parameters:
@@ -2980,12 +2986,11 @@ components:
       description: |
         Response payload for the BigCommerce API.
       x-internal: false
-      allOf:
-        - type: object
-          properties:
-            data:
-              $ref: '#/components/schemas/Metafield'
-        - $ref: '#/components/schemas/CollectionMeta'
+      properties:
+        data:
+          $ref: '#/components/schemas/Metafield'
+        meta: # should be empty
+          $ref: '#/components/schemas/CollectionMeta'
     Metafield:
       description: |
         Allows app partners to write custom data to various resources in the API.
@@ -3080,8 +3085,8 @@ components:
     MetafieldPost:
       description: |
         The model for a POST to create metafield.
-      allOf:
-        - $ref: '#/components/schemas/MetafieldBase_Post'
+      allOf: #???
+        - $ref: '#/components/schemas/MetafieldBase_Post' ## don't fit no required fields. each of fields could be updated independently
       x-internal: false
     MetafieldBase_Post:
       type: object
