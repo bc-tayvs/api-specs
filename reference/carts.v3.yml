@@ -860,6 +860,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetafieldResponse'
+#                409 and 422 should not be possible
+#                409 caused only on insert or update when uniqueness check failed
+#                422 used when json body incorrect, but we required nothing in the body
         '409':
           description: |
             The `Metafield` conflicts with another `Metafield`. This can be the result of duplicate unique key combinations of the appʼs client id, namespace, key, resource_type, and resource_id.
@@ -942,6 +945,31 @@ paths:
         in: path
         required: true
         description: The unique ID of the subject `Metafield`.
+  '/carts/metafiedls':
+    get:
+      summary: Get Carts Metafields
+      tags:
+        - Metafields
+      description: Gets carts metafields.
+      operationId: getCartsMetafields
+      responses:
+        '200':
+          description: |
+            List of `Metafield` objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetafieldResponse'
+        '500':
+          description: Internal Server Error
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/MetafieldKeyParam'
+        - $ref: '#/components/parameters/MetafieldKeyInParam'
+        - $ref: '#/components/parameters/MetafieldNamespaceParam'
+        - $ref: '#/components/parameters/MetafieldNamespaceInParam'
+        - $ref: '#/components/parameters/DirectionParam'
 components:
   schemas:
     CartUpdateRequest:
@@ -3294,13 +3322,35 @@ components:
       required: false
       schema:
         type: string
+    MetafieldKeyInParam:
+      name: key:in
+      in: query
+      description: Filter based on comma separated metafieldʼs keys. Could be used with vanila 'key' query parameter.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
     MetafieldNamespaceParam:
       name: namespace
       in: query
-      description: Filter based on a metafieldʼs key.
+      description: Filter based on a metafieldʼs namespaces.
       required: false
       schema:
         type: string
+    MetafieldNamespaceInParam:
+      name: namespace:in
+      in: query
+      description: Filter based on comma separated metafieldʼs namespaces. Could be used with vanila 'namespace' query parameter.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
     LimitParam:
       name: limit
       description: |
