@@ -781,12 +781,14 @@ paths:
       tags:
         - Metafields
       description: Get all cart metafields.
-      operationId: getAllCartMetafields
+      operationId: getAllCartMetafields #getAllMetafieldsByCartId?
       parameters:
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/LimitParam'
         - $ref: '#/components/parameters/MetafieldKeyParam'
+        - $ref: '#/components/parameters/MetafieldKeyInParam'
         - $ref: '#/components/parameters/MetafieldNamespaceParam'
+        - $ref: '#/components/parameters/MetafieldNamespaceInParam'
         - $ref: '#/components/parameters/DirectionParam'
       responses:
         '200':
@@ -904,7 +906,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MetafieldPost'
+              $ref: '#/components/schemas/MetafieldPut'
             examples: {}
         description: |
           A `Metafield` object.
@@ -953,11 +955,11 @@ paths:
         description: The unique ID of the subject `Metafield`.
   '/carts/metafields':
     get:
-      summary: Get Carts Metafields
+      summary: Get All Metafields
       tags:
         - Metafields
-      description: Gets carts metafields.
-      operationId: getCartsMetafields
+      description: Get all cart metafields.
+      operationId: getCartsMetafields #getAllMetafeilds
       responses:
         '200':
           description: |
@@ -3144,6 +3146,63 @@ components:
         - namespace
         - key
         - value
+    MetafieldPut:
+      description: |
+        The model for a POST to create metafield.
+      allOf: #???
+        - $ref: '#/components/schemas/MetafieldBase_Put' ## don't fit no required fields. each of fields could be updated independently
+      x-internal: false
+    MetafieldBase_Put:
+      type: object
+      description: |
+        Common Metafield properties.
+      x-internal: false
+      properties:
+        permission_set:
+          type: string
+          description: |
+            Determines the visibility and writeability of the field by other API consumers.
+            | Value | Description |
+            | :--- | :--- |
+            | `app_only` | Private to the app that owns the field. |
+            | `read` | Visible to other API consumers. |
+            | `write` | Open for reading and writing by other API consumers. |
+            | `read_and_sf_access` | Visible to other API consumers, including on storefront. |
+            | `write_and_sf_access` | Open for reading and writing by other API consumers, including on storefront. |
+          enum:
+            - app_only
+            - read
+            - write
+            - read_and_sf_access
+            - write_and_sf_access
+        namespace:
+          type: string
+          description: |
+            Namespace for the metafield, for organizational purposes.
+          example: Sales Department
+          minLength: 1
+          maxLength: 64
+        key:
+          type: string
+          description: |
+            The name of the field, for example: `location_id`, `color`.
+          minLength: 1
+          maxLength: 64
+          example: Staff Name
+        value:
+          type: string
+          description: |
+            The value of the field, for example: `1`, `blue`.
+          minLength: 1
+          maxLength: 65535
+          example: Ronaldo
+        description:
+          type: string
+          description: |
+            Description for the metafields.
+          minLength: 0
+          maxLength: 255
+          example: Name of Staff Member
     MetaFieldCollectionResponse:
       type: object
       description: |
