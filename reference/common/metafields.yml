@@ -1,0 +1,282 @@
+openapi: '3.0.3'
+info: null
+paths: null
+components:
+  schemas:
+    MetafieldResponse:
+      description: |
+        Response payload for the BigCommerce API.
+      x-internal: false
+      properties:
+        data:
+          $ref: '#/components/schemas/Metafield'
+        meta: # should be empty
+          $ref: './common.yml#/components/schemas/CollectionMeta'
+    Metafield:
+      description: |
+        Allows app partners to write custom data to various resources in the API.
+      allOf:
+        - $ref: '#/components/schemas/MetafieldBase'
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: The unique identifier for the metafield.
+            date_created:
+              type: string
+              format: date-time
+              description: Date and time of the metafieldʼs creation.
+              example: '2022-06-16T18:39:00+00:00'
+            date_modified:
+              type: string
+              format: date-time
+              description: Date and time when the metafield was last updated.
+              example: '2022-06-16T18:39:00+00:00'
+      x-internal: false
+    MetafieldBase:
+      type: object
+      description: |
+        Common Metafield properties.
+      x-internal: false
+      properties:
+        permission_set:
+          type: string
+          description: |
+            Determines the visibility and writeability of the field by other API consumers.
+            | Value | Description |
+            | :--- | :--- |
+            | `app_only` | Private to the app that owns the field. |
+            | `read` | Visible to other API consumers. |
+            | `write` | Open for reading and writing by other API consumers. |
+            | `read_and_sf_access` | Visible to other API consumers, including on storefront. |
+            | `write_and_sf_access` | Open for reading and writing by other API consumers, including on storefront. |
+          enum:
+            - app_only
+            - read
+            - write
+            - read_and_sf_access
+            - write_and_sf_access
+        namespace:
+          type: string
+          description: |
+            Namespace for the metafield, for organizational purposes.
+          example: Sales Department
+          minLength: 1
+          maxLength: 64
+        key:
+          type: string
+          description: |
+            The name of the field, for example: `location_id`, `color`.
+          minLength: 1
+          maxLength: 64
+          example: Staff Name
+        value:
+          type: string
+          description: |
+            The value of the field, for example: `1`, `blue`.
+          minLength: 1
+          maxLength: 65535
+          example: Ronaldo
+        description:
+          type: string
+          description: |
+            Description for the metafields.
+          example: order
+          minLength: 0
+          maxLength: 255
+        resource_type:
+          type: string
+          description: |
+            The type of resource with which the metafield is associated.
+          enum:
+            - brand
+            - product
+            - variant
+            - category
+            - cart
+          example: cart
+        resource_id:
+          type: string
+          description: |
+            The unique identifier for the resource with which the metafield is associated.
+          example: '0'
+          readOnly: true
+      required:
+        - permission_set
+    MetafieldPost:
+      description: |
+        The model for a POST to create metafield.
+      allOf: #???
+        - $ref: '#/components/schemas/MetafieldBase_Post' ## don't fit no required fields. each of fields could be updated independently
+      x-internal: false
+    MetafieldBase_Post:
+      type: object
+      description: |
+        Common Metafield properties.
+      x-internal: false
+      properties:
+        permission_set:
+          type: string
+          description: |
+            Determines the visibility and writeability of the field by other API consumers.
+            | Value | Description |
+            | :--- | :--- |
+            | `app_only` | Private to the app that owns the field. |
+            | `read` | Visible to other API consumers. |
+            | `write` | Open for reading and writing by other API consumers. |
+            | `read_and_sf_access` | Visible to other API consumers, including on storefront. |
+            | `write_and_sf_access` | Open for reading and writing by other API consumers, including on storefront. |
+          enum:
+            - app_only
+            - read
+            - write
+            - read_and_sf_access
+            - write_and_sf_access
+        namespace:
+          type: string
+          description: |
+            Namespace for the metafield, for organizational purposes.
+          example: Sales Department
+          minLength: 1
+          maxLength: 64
+        key:
+          type: string
+          description: |
+            The name of the field, for example: `location_id`, `color`.
+          minLength: 1
+          maxLength: 64
+          example: Staff Name
+        value:
+          type: string
+          description: |
+            The value of the field, for example: `1`, `blue`.
+          minLength: 1
+          maxLength: 65535
+          example: Ronaldo
+        description:
+          type: string
+          description: |
+            Description for the metafields.
+          minLength: 0
+          maxLength: 255
+          example: Name of Staff Member
+      required:
+        - permission_set
+        - namespace
+        - key
+        - value
+    MetafieldPut:
+      description: |
+        The model for a POST to create metafield.
+      allOf: #???
+        - $ref: '#/components/schemas/MetafieldBase_Put' ## don't fit no required fields. each of fields could be updated independently
+      x-internal: false
+    MetafieldBase_Put:
+      type: object
+      description: |
+        Common Metafield properties.
+      x-internal: false
+      properties:
+        permission_set:
+          type: string
+          description: |
+            Determines the visibility and writeability of the field by other API consumers.
+            | Value | Description |
+            | :--- | :--- |
+            | `app_only` | Private to the app that owns the field. |
+            | `read` | Visible to other API consumers. |
+            | `write` | Open for reading and writing by other API consumers. |
+            | `read_and_sf_access` | Visible to other API consumers, including on storefront. |
+            | `write_and_sf_access` | Open for reading and writing by other API consumers, including on storefront. |
+          enum:
+            - app_only
+            - read
+            - write
+            - read_and_sf_access
+            - write_and_sf_access
+        namespace:
+          type: string
+          description: |
+            Namespace for the metafield, for organizational purposes.
+          example: Sales Department
+          minLength: 1
+          maxLength: 64
+        key:
+          type: string
+          description: |
+            The name of the field, for example: `location_id`, `color`.
+          minLength: 1
+          maxLength: 64
+          example: Staff Name
+        value:
+          type: string
+          description: |
+            The value of the field, for example: `1`, `blue`.
+          minLength: 1
+          maxLength: 65535
+          example: Ronaldo
+        description:
+          type: string
+          description: |
+            Description for the metafields.
+          minLength: 0
+          maxLength: 255
+          example: Name of Staff Member
+    MetaFieldCollectionResponse:
+      type: object
+      description: |
+        Response payload for the BigCommerce API.
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metafield'
+        meta:
+          $ref: './common.yml#/components/schemas/CollectionMeta'
+      x-internal: false
+  
+  parameters:
+    MetafieldKeyParam:
+      name: key
+      in: query
+      description: Filter based on a metafieldʼs key.
+      required: false
+      schema:
+        type: string
+    MetafieldKeyInParam:
+      name: key:in
+      in: query
+      description: Filter based on comma separated metafieldʼs keys. Could be used with vanila 'key' query parameter.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    MetafieldNamespaceParam:
+      name: namespace
+      in: query
+      description: Filter based on a metafieldʼs namespaces.
+      required: false
+      schema:
+        type: string
+    MetafieldNamespaceInParam:
+      name: namespace:in
+      in: query
+      description: Filter based on comma separated metafieldʼs namespaces. Could be used with vanila 'namespace' query parameter.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    MetafieldIdParam:
+      name: metafield_id
+      in: path
+      description: |
+        The ID of the `Metafield`.
+      required: true
+      schema:
+        type: integer
