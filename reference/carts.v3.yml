@@ -783,13 +783,13 @@ paths:
       description: Get all cart metafields.
       operationId: getAllCartMetafields #getAllMetafieldsByCartId?
       parameters:
-        - $ref: '#/components/parameters/PageParam'
-        - $ref: '#/components/parameters/LimitParam'
+        - $ref: './common/common.yml#/components/parameters/PageParam'
+        - $ref: './common/common.yml#/components/parameters/LimitParam'
         - $ref: './common/metafields.yml#/components/parameters/MetafieldKeyParam'
         - $ref: './common/metafields.yml#/components/parameters/MetafieldKeyInParam'
         - $ref: './common/metafields.yml#/components/parameters/MetafieldNamespaceParam'
         - $ref: './common/metafields.yml#/components/parameters/MetafieldNamespaceInParam'
-        - $ref: '#/components/parameters/DirectionParam'
+        - $ref: './common/common.yml#/components/parameters/DirectionParam'
       responses:
         '200':
           description: |
@@ -888,11 +888,11 @@ paths:
         '500':
           description: Internal Server Error
       parameters:
-        - $ref: '#/components/parameters/PageParam'
-        - $ref: '#/components/parameters/LimitParam'
+        - $ref: './common/common.yml#/components/parameters/PageParam'
+        - $ref: './common/common.yml#/components/parameters/LimitParam'
         - $ref: './common/metafields.yml#/components/parameters/MetafieldKeyParam' # we fetch by metafields id. Does this endpoint actually support filters?
         - $ref: './common/metafields.yml#/components/parameters/MetafieldNamespaceParam'
-        - $ref: '#/components/parameters/DirectionParam'
+        - $ref: './common/common.yml#/components/parameters/DirectionParam'
     put:
       summary: Update a Cart Metafield
       tags:
