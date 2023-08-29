@@ -1,6 +1,6 @@
 openapi: '3.0.3'
-info: null
-paths: null
+info: {}
+paths: {}
 components:
   schemas:
     MetafieldResponse:
